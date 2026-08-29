@@ -30,7 +30,7 @@ export default function Footer() {
         {/* Main Footer Links */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
           <div className="col-span-2 md:col-span-2 space-y-6 pr-0 md:pr-10">
-            <Logo href="/" size="lg" />
+            <Logo href="/" size="lg" isDark={true} />
             <p className="text-slate-400 leading-relaxed text-sm">
               Growing Good. Growing Together. Bringing farm-fresh A2 dairy, 100% organic produce, vermicompost, and natural spices directly from Lal Balram Organic Farm to your doorstep.
             </p>

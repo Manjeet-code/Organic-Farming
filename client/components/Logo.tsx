@@ -5,10 +5,16 @@ import Link from "next/link";
 interface LogoProps {
   href?: string;
   size?: "sm" | "md" | "lg";
+  isDark?: boolean;
   className?: string;
 }
 
-export default function Logo({ href = "/", size = "md", className = "" }: LogoProps) {
+export default function Logo({
+  href = "/",
+  size = "md",
+  isDark = false,
+  className = "",
+}: LogoProps) {
   const iconSizeClass =
     size === "sm"
       ? "w-9 h-9 rounded-[14px]"
@@ -30,6 +36,10 @@ export default function Logo({ href = "/", size = "md", className = "" }: LogoPr
       ? "text-xs font-extrabold mt-1.5"
       : "text-[10px] md:text-[11px] font-extrabold mt-1";
 
+  const theFarmColor = isDark ? "text-white" : "text-slate-900";
+  const brothersColor = isDark ? "text-emerald-400" : "text-[#00875a]";
+  const taglineColor = isDark ? "text-emerald-300" : "text-[#00704a]";
+
   const content = (
     <div className={`flex items-center gap-3 group ${className}`}>
       {/* Soft Mint Green Emblem Badge */}
@@ -46,12 +56,12 @@ export default function Logo({ href = "/", size = "md", className = "" }: LogoPr
       {/* Brand Name & Subtext */}
       <div className="flex flex-col justify-center">
         <span
-          className={`${titleSizeClass} tracking-tight text-slate-900 leading-none group-hover:text-emerald-800 transition-colors`}
+          className={`${titleSizeClass} tracking-tight ${theFarmColor} leading-none transition-colors`}
         >
-          THE FARM <span className="text-[#00875a]">BROTHERS</span>
+          THE FARM <span className={brothersColor}>BROTHERS</span>
         </span>
         <span
-          className={`${taglineSizeClass} text-[#00704a] tracking-wider uppercase leading-none`}
+          className={`${taglineSizeClass} ${taglineColor} tracking-wider uppercase leading-none`}
         >
           FROM OUR FARM FOR YOUR FAMILY
         </span>

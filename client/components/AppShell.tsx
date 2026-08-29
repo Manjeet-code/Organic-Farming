@@ -176,7 +176,7 @@ export default function AppShell({
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <Logo href="/" size="sm" />
+              <Logo href="/" size="sm" isDark={true} />
               <div className="hidden sm:block pl-3 border-l border-slate-700">
                 {getRoleBadge()}
               </div>
