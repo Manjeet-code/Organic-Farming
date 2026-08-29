@@ -13,8 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Agro Organic",
-  description: "Fresh Organic Dairy & Turmeric Products",
+  title: "The Farm Brothers | From Our Farm For Your Family",
+  description: "Fresh Organic Dairy, Produce & Farming Products - From Our Farm For Your Family",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/favicon.ico",
+    apple: "/icon.png",
+  },
 };
 
 import { AuthProvider } from "../context/AuthContext";

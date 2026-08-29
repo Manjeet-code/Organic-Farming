@@ -24,7 +24,7 @@ export default function TermsOfService() {
               <section>
                 <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Agreement to Terms</h2>
                 <p>
-                  By accessing or using AgroOrganic's website and services, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access our services.
+                  By accessing or using The Farm Brothers' website and services, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access our services.
                 </p>
               </section>
 

@@ -51,7 +51,7 @@ export default function PrivacyPolicy() {
               <section>
                 <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Contact Us</h2>
                 <p>
-                  If you have any questions about this Privacy Policy, please contact us at support@agroorganic.com or via our WhatsApp support line.
+                  If you have any questions about this Privacy Policy, please contact us at support@thefarmbrothers.com or via our WhatsApp support line (+91 85444 88617).
                 </p>
               </section>
             </div>

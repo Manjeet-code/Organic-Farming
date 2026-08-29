@@ -116,8 +116,8 @@ export default function AppShell({
     } else {
       // Customer
       return [
-        { id: "overview", label: "My Orders & Subs", icon: "🛒" },
         { id: "catalog", label: "Storefront Catalog", icon: "🥦" },
+        { id: "overview", label: "My Orders & Subs", icon: "🛒" },
         { id: "wallet", label: "Wallet & Billing", icon: "💳" },
         { id: "issues", label: "Report Quality Issue", icon: "🛡️" },
       ];
@@ -176,11 +176,18 @@ export default function AppShell({
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <Link href="/" className="flex items-center gap-2 group">
-                <span className="text-2xl group-hover:scale-110 transition-transform">🌿</span>
-                <span className="font-extrabold text-xl tracking-tight text-white">
-                  FarmFresh <span className="text-emerald-400 font-medium text-base">Direct</span>
-                </span>
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-emerald-950 p-1 border border-emerald-700 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <img src="/icon.png" alt="The Farm Brothers Logo" className="w-full h-full object-contain" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-extrabold text-lg tracking-tight text-white leading-none">
+                    THE FARM <span className="text-emerald-400 font-extrabold">BROTHERS</span>
+                  </span>
+                  <span className="text-[9px] font-semibold text-emerald-300 tracking-wider uppercase mt-0.5">
+                    From Our Farm For Your Family
+                  </span>
+                </div>
               </Link>
               <div className="hidden sm:block pl-3 border-l border-slate-700">
                 {getRoleBadge()}
@@ -189,20 +196,22 @@ export default function AppShell({
 
             {/* Right Profile / Cart / Controls */}
             <div className="flex items-center gap-4">
-              {/* Shopping Cart Button */}
-              <button
-                onClick={toggleCart}
-                className="relative bg-emerald-600 hover:bg-emerald-500 text-white p-2 rounded-xl transition shadow-md flex items-center gap-2"
-                title="View Morning Harvest Cart"
-              >
-                <span className="text-lg">🛒</span>
-                <span className="hidden sm:inline text-xs font-bold">Cart</span>
-                {totalItems > 0 && (
-                  <span className="bg-amber-400 text-slate-900 font-black text-[11px] px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
-                    {totalItems}
-                  </span>
-                )}
-              </button>
+              {/* Shopping Cart Button (Customer Only) */}
+              {role !== "admin" && role !== "delivery_ops" && role !== "delivery-ops" && (
+                <button
+                  onClick={toggleCart}
+                  className="relative bg-emerald-600 hover:bg-emerald-500 text-white p-2 rounded-xl transition shadow-md flex items-center gap-2"
+                  title="View Morning Harvest Cart"
+                >
+                  <span className="text-lg">🛒</span>
+                  <span className="hidden sm:inline text-xs font-bold">Cart</span>
+                  {totalItems > 0 && (
+                    <span className="bg-amber-400 text-slate-900 font-black text-[11px] px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                      {totalItems}
+                    </span>
+                  )}
+                </button>
+              )}
 
               {/* Notification Center Bell Icon Button (Phase 10) */}
               {user && (
@@ -290,10 +299,7 @@ export default function AppShell({
               )}
 
 
-              <div className="hidden md:flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 text-xs text-slate-300">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>API Health: <strong className="text-emerald-300">Online</strong></span>
-              </div>
+
 
               {user ? (
                 <div className="flex items-center gap-3">
@@ -407,7 +413,7 @@ export default function AppShell({
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 mt-auto text-xs text-slate-500 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2">
-          <p>© 2026 FarmFresh Direct — Farm-to-Doorstep Delivery & Subscription Platform</p>
+          <p>© 2026 The Farm Brothers — Farm-to-Doorstep Delivery & Subscription Platform</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-slate-800 transition">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-slate-800 transition">Terms of Service</Link>

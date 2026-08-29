@@ -24,7 +24,7 @@ export default function Navbar({
     <div className="sticky top-0 z-50 flex flex-col shadow-sm">
       {/* Top Announcement Bar */}
       <div className="bg-green-700 text-white text-xs md:text-sm font-medium py-2 px-6 flex justify-between items-center">
-        <p className="hidden md:block">🌱 100% Certified Organic Farm Products</p>
+        <p className="hidden md:block">🌱 The Farm Brothers | 100% Certified Organic</p>
         <p className="mx-auto md:mx-0 font-semibold tracking-wide">
           🚚 Free Next-Day Delivery on all Daily Orders & Subscriptions!
         </p>
@@ -39,14 +39,19 @@ export default function Navbar({
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           
           {/* Logo */}
-          <div className="flex items-center gap-2 cursor-pointer">
-            <div className="bg-green-100 p-2 rounded-full">
-              <span className="text-2xl">🌿</span>
+          <Link href="/" className="flex items-center gap-3 cursor-pointer group">
+            <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-green-50 p-1 border border-green-200/80 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform">
+              <img src="/icon.png" alt="The Farm Brothers Logo" className="w-full h-full object-contain" />
             </div>
-            <h1 className="text-2xl md:text-3xl font-black text-green-800 tracking-tighter">
-              Agro<span className="text-green-600 font-bold">Organic</span>
-            </h1>
-          </div>
+            <div className="flex flex-col">
+              <h1 className="text-xl md:text-2xl font-black text-emerald-950 tracking-tight leading-none">
+                THE FARM <span className="text-emerald-600 font-extrabold">BROTHERS</span>
+              </h1>
+              <span className="text-[10px] font-semibold text-emerald-700 tracking-wider uppercase mt-0.5">
+                From Our Farm For Your Family
+              </span>
+            </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-4 xl:gap-6 font-semibold text-gray-600 text-sm xl:text-base">

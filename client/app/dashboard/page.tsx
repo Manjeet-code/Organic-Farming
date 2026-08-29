@@ -41,6 +41,12 @@ export default function Dashboard() {
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [fulfillmentMsg, setFulfillmentMsg] = useState("");
 
+  // Delivery Ops Filters for Dispatch Manager & Quality Reports
+  const [dispatchStatusFilter, setDispatchStatusFilter] = useState("ALL");
+  const [dispatchSearchTerm, setDispatchSearchTerm] = useState("");
+  const [issueStatusFilter, setIssueStatusFilter] = useState("ALL");
+  const [issueSearchTerm, setIssueSearchTerm] = useState("");
+
   // Delivery-Ops Mobile Field Mode & Doorstep Proof State (Phase 14)
   const [mobileFieldMode, setMobileFieldMode] = useState(false);
   const [doorstepPhotoMap, setDoorstepPhotoMap] = useState<{ [orderId: string]: string }>({});
@@ -695,363 +701,503 @@ export default function Dashboard() {
             </div>
           ) : (
             <>
+              {/* TAB 1: ZONE QUEUE */}
+              {opsTab === "overview" && (
+                <div className="space-y-4">
+                  {/* Queue Filter Bar */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 p-4 rounded-xl border border-slate-200 gap-3">
+                    <div className="flex items-center gap-2 text-xs flex-wrap">
+                      <span className="font-bold text-slate-700">Category Filter:</span>
+                      {["ALL", "DAIRY", "VEGETABLE", "FRUIT", "OTHER"].map((cat) => (
+                        <button
+                          key={cat}
+                          onClick={() => setSelectedCategory(cat)}
+                          className={`px-3 py-1 rounded-lg font-bold transition ${
+                            selectedCategory === cat
+                              ? "bg-slate-900 text-white shadow-sm"
+                              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
 
-            <div className="space-y-4">
-              {/* Queue Filter Bar */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 p-4 rounded-xl border border-slate-200 gap-3">
-                <div className="flex items-center gap-2 text-xs">
-                  <span className="font-bold text-slate-700">Category Filter:</span>
-                  {["ALL", "DAIRY", "VEGETABLE", "FRUIT", "OTHER"].map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedCategory(cat)}
-                      className={`px-3 py-1 rounded-lg font-bold transition ${
-                        selectedCategory === cat
-                          ? "bg-slate-900 text-white"
-                          : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
+                    <span className="text-xs font-extrabold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
+                      {opsQueue?.totalOrders || 0} Orders in Route Queue
+                    </span>
+                  </div>
 
-                <span className="text-xs font-extrabold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
-                  {opsQueue?.totalOrders || 0} Orders in Route Queue
-                </span>
-              </div>
+                  {/* Queue Orders List */}
+                  {loadingOpsQueue ? (
+                    <div className="p-12 text-center text-slate-400 font-bold">Loading Route Queue...</div>
+                  ) : (() => {
+                    const filteredOpsOrders = (opsQueue?.orders || []).filter((order: any) => {
+                      if (selectedCategory === "ALL") return true;
+                      return order.products?.some((p: any) => {
+                        const prodCategory = (p.category || p.product?.category || "").toUpperCase();
+                        const prodName = (p.name || p.product?.name || "").toLowerCase();
+                        if (selectedCategory === "DAIRY") {
+                          return prodCategory === "DAIRY" || prodName.includes("milk") || prodName.includes("paneer") || prodName.includes("ghee") || prodName.includes("curd") || prodName.includes("butter") || prodName.includes("dahi");
+                        }
+                        if (selectedCategory === "VEGETABLE") {
+                          return prodCategory === "VEGETABLE" || prodName.includes("subzi") || prodName.includes("potato") || prodName.includes("onion") || prodName.includes("tomato") || prodName.includes("palak") || prodName.includes("gobhi");
+                        }
+                        if (selectedCategory === "FRUIT") {
+                          return prodCategory === "FRUIT" || prodName.includes("fruit") || prodName.includes("apple") || prodName.includes("mango") || prodName.includes("banana") || prodName.includes("guava") || prodName.includes("papaya");
+                        }
+                        if (selectedCategory === "OTHER") {
+                          return prodCategory === "OTHER" || prodName.includes("vermicompost") || prodName.includes("turmeric") || prodName.includes("fertilizer") || prodName.includes("seeds");
+                        }
+                        return prodCategory === selectedCategory;
+                      });
+                    });
 
-              {/* Queue Orders List */}
-              {loadingOpsQueue ? (
-                <div className="p-12 text-center text-slate-400 font-bold">Loading Route Queue...</div>
-              ) : !opsQueue || opsQueue.orders?.length === 0 ? (
-                <div className="p-12 text-center bg-white rounded-xl border border-slate-200 text-slate-500">
-                  <span className="text-4xl block mb-2">🚚</span>
-                  <p className="font-bold text-slate-800">No orders assigned to your route for this batch filter.</p>
-                  <p className="text-xs text-slate-400 mt-1">New customer orders placed before 9:30 PM will appear here automatically.</p>
-                </div>
-              ) : (
-                <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                  <ul className="divide-y divide-slate-100">
-                    {opsQueue.orders.map((order: any) => (
-                      <li key={order._id} className="p-5 hover:bg-slate-50/80 transition space-y-3">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-mono font-extrabold text-slate-900 text-sm">
-                                Order #{String(order._id).substring(String(order._id).length - 6).toUpperCase()}
-                              </span>
-                              <span className="bg-blue-100 text-blue-800 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-blue-200">
-                                {order.status}
-                              </span>
-                              {order.isSubscriptionGenerated && (
-                                <span className="bg-purple-100 text-purple-800 font-bold text-[10px] px-2 py-0.5 rounded border border-purple-200">
-                                  Subscription Batch
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-xs text-slate-600 font-bold mt-1">
-                              👤 Customer: {order.customerName} ({order.phone})
-                            </p>
-                            <p className="text-xs text-slate-500">
-                              📍 Address: {order.address} — <strong>Pincode {order.pincode}</strong>
-                            </p>
-                          </div>
-
-                          <div className="text-right shrink-0">
-                            <span className="text-[10px] text-slate-400 font-bold uppercase block">Delivery Target</span>
-                            <span className="font-bold text-emerald-700 text-xs">
-                              {new Date(order.deliveryDate).toLocaleDateString()} (07:00 AM)
-                            </span>
-                            <span className="font-extrabold text-slate-900 text-sm block mt-0.5">
-                              ₹{order.totalAmount}
-                            </span>
-                          </div>
+                    if (filteredOpsOrders.length === 0) {
+                      return (
+                        <div className="p-12 text-center bg-white rounded-xl border border-slate-200 text-slate-500">
+                          <span className="text-4xl block mb-2">🚚</span>
+                          <p className="font-bold text-slate-800">No orders match the selected category filter ({selectedCategory}).</p>
+                          <p className="text-xs text-slate-400 mt-1">Try switching back to "ALL" category to view all route orders.</p>
                         </div>
+                      );
+                    }
 
-                        {/* Line Items & Fulfillment Controls */}
-                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                          <p className="text-[11px] font-bold text-slate-600 uppercase flex justify-between items-center">
-                            <span>Dispatch Packing List & Item Actions:</span>
-                            {fulfillmentMsg && <span className="text-emerald-700 font-bold">{fulfillmentMsg}</span>}
-                          </p>
-
-                          <div className="space-y-2">
-                            {order.products?.map((p: any, i: number) => (
-                              <div key={i} className="bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs">
+                    return (
+                      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                        <ul className="divide-y divide-slate-100">
+                          {filteredOpsOrders.map((order: any) => (
+                            <li key={order._id} className="p-5 hover:bg-slate-50/80 transition space-y-3">
+                              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                                 <div>
-                                  <span className="font-bold text-slate-900">{p.name}</span>
-                                  <span className="text-slate-500 font-bold ml-1">x{p.qty} ({p.unit})</span>
-                                  {p.substitutedName && (
-                                    <span className="ml-2 bg-amber-100 text-amber-900 font-bold text-[10px] px-2 py-0.5 rounded border border-amber-200">
-                                      Substituted: {p.substitutedName}
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-mono font-extrabold text-slate-900 text-sm">
+                                      Order #{String(order._id).substring(String(order._id).length - 6).toUpperCase()}
                                     </span>
-                                  )}
-                                  {p.fulfillmentStatus && (
-                                    <span className="ml-2 bg-emerald-50 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded border border-emerald-200">
-                                      Status: {p.fulfillmentStatus}
+                                    <span className="bg-blue-100 text-blue-800 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-blue-200">
+                                      {order.status}
                                     </span>
-                                  )}
+                                    {order.isSubscriptionGenerated && (
+                                      <span className="bg-purple-100 text-purple-800 font-bold text-[10px] px-2 py-0.5 rounded border border-purple-200">
+                                        Subscription Batch
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-slate-600 font-bold mt-1">
+                                    👤 Customer: {order.customerName} ({order.phone})
+                                  </p>
+                                  <p className="text-xs text-slate-500">
+                                    📍 Address: {order.address} — <strong>Pincode {order.pincode}</strong>
+                                  </p>
                                 </div>
 
-                                {/* Item Action Buttons */}
-                                <div className="flex gap-1.5 shrink-0">
+                                <div className="text-right shrink-0">
+                                  <span className="text-[10px] text-slate-400 font-bold uppercase block">Delivery Target</span>
+                                  <span className="font-bold text-emerald-700 text-xs">
+                                    {new Date(order.deliveryDate).toLocaleDateString()} (07:00 AM)
+                                  </span>
+                                  <span className="font-extrabold text-slate-900 text-sm block mt-0.5">
+                                    ₹{order.totalAmount}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Line Items & Fulfillment Controls */}
+                              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                                <p className="text-[11px] font-bold text-slate-600 uppercase flex justify-between items-center">
+                                  <span>Dispatch Packing List & Item Actions:</span>
+                                  {fulfillmentMsg && <span className="text-emerald-700 font-bold">{fulfillmentMsg}</span>}
+                                </p>
+
+                                <div className="space-y-2">
+                                  {order.products?.map((p: any, i: number) => (
+                                    <div key={i} className="bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs">
+                                      <div>
+                                        <span className="font-bold text-slate-900">{p.name}</span>
+                                        <span className="text-slate-500 font-bold ml-1">x{p.qty} ({p.unit})</span>
+                                        {p.substitutedName && (
+                                          <span className="ml-2 bg-amber-100 text-amber-900 font-bold text-[10px] px-2 py-0.5 rounded border border-amber-200">
+                                            Substituted: {p.substitutedName}
+                                          </span>
+                                        )}
+                                        {p.fulfillmentStatus && (
+                                          <span className="ml-2 bg-emerald-50 text-emerald-800 font-bold text-[10px] px-2 py-0.5 rounded border border-emerald-200">
+                                            Status: {p.fulfillmentStatus}
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      {/* Item Action Buttons */}
+                                      <div className="flex gap-1.5 shrink-0">
+                                        <button
+                                          onClick={() => handleItemFulfillment(order._id, i, "Harvested")}
+                                          className="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[11px] px-2.5 py-1 rounded border border-emerald-200 transition"
+                                        >
+                                          Harvested 🥦
+                                        </button>
+                                        <button
+                                          onClick={() => handleItemFulfillment(order._id, i, "Packed")}
+                                          className="bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold text-[11px] px-2.5 py-1 rounded border border-blue-200 transition"
+                                        >
+                                          Packed 📦
+                                        </button>
+                                        <button
+                                          onClick={() => handleApplySubstitution(order._id, i)}
+                                          className="bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-[11px] px-2.5 py-1 rounded border border-amber-200 transition"
+                                        >
+                                          Substitute 🔄
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Order Stage Transition Action Bar */}
+                              <div className="pt-2 flex flex-wrap gap-2 border-t border-slate-200">
+                                <button
+                                  onClick={() => handleCutoffLock(order._id)}
+                                  className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition"
+                                >
+                                  Lock Cutoff (9:30 PM) 🔒
+                                </button>
+                                <button
+                                  onClick={() => handleDispatchOrder(order._id)}
+                                  className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition"
+                                >
+                                  Out for Delivery 🚚
+                                </button>
+                                <button
+                                  onClick={() => handleDeliverOrder(order._id)}
+                                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition"
+                                >
+                                  Mark Delivered 🏡 (7 AM SLA)
+                                </button>
+                                <button
+                                  onClick={() => handleFailedDelivery(order._id)}
+                                  className="bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs px-3 py-1.5 rounded-lg border border-red-200 transition"
+                                >
+                                  Failed Delivery ⚠️
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
+
+              {/* TAB 2: DISPATCH MANAGER */}
+              {opsTab === "dispatches" && (
+                <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+                  <div className="flex justify-between items-center border-b pb-4">
+                    <div>
+                      <h2 className="text-lg font-bold text-slate-900">🛵 Logistics & Vehicle Dispatch Manager</h2>
+                      <p className="text-xs text-slate-500 mt-0.5">Route Batch: {opsQueue?.zone?.name || "Arwal - Patna Route"}</p>
+                    </div>
+                    <span className="bg-amber-100 text-amber-900 font-extrabold text-xs px-3 py-1 rounded-full border border-amber-300">
+                      Target Dispatch: 04:30 AM
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                      <p className="text-slate-400 font-bold uppercase text-[10px]">Total Packed Crates</p>
+                      <p className="text-2xl font-black text-slate-900 mt-1">
+                        {opsQueue?.orders?.filter((o: any) => o.status === "Packed" || o.status === "Out for Delivery" || o.status === "Delivered").length || 0}
+                      </p>
+                    </div>
+                    <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                      <p className="text-blue-600 font-bold uppercase text-[10px]">Out for Delivery</p>
+                      <p className="text-2xl font-black text-blue-900 mt-1">
+                        {opsQueue?.orders?.filter((o: any) => o.status === "Out for Delivery").length || 0}
+                      </p>
+                    </div>
+                    <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+                      <p className="text-emerald-700 font-bold uppercase text-[10px]">Completed Deliveries</p>
+                      <p className="text-2xl font-black text-emerald-900 mt-1">
+                        {opsQueue?.orders?.filter((o: any) => o.status === "Delivered").length || 0}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Dispatch Manager Filters Bar */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 p-4 rounded-xl border border-slate-200 gap-3">
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                      <span className="font-bold text-slate-700">Status Filter:</span>
+                      {["ALL", "Packed", "Out for Delivery", "Delivered", "Failed Delivery"].map((st) => (
+                        <button
+                          key={st}
+                          onClick={() => setDispatchStatusFilter(st)}
+                          className={`px-3 py-1 rounded-lg font-bold transition text-xs ${
+                            dispatchStatusFilter === st
+                              ? "bg-slate-900 text-white shadow-sm"
+                              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                          }`}
+                        >
+                          {st}
+                        </button>
+                      ))}
+                    </div>
+
+                    <input
+                      type="text"
+                      placeholder="Search customer, phone, pincode..."
+                      value={dispatchSearchTerm}
+                      onChange={(e) => setDispatchSearchTerm(e.target.value)}
+                      className="w-full sm:w-60 px-3 py-1.5 text-xs rounded-xl border border-slate-300 text-slate-900 bg-white outline-none focus:ring-2 focus:ring-slate-900"
+                    />
+                  </div>
+
+                  {/* Route Order Manifest List */}
+                  <div className="pt-2 space-y-4">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 pb-3 gap-2">
+                      <h3 className="font-extrabold text-slate-900 text-sm flex items-center gap-2">
+                        <span>🚚</span> Route Delivery Manifest ({opsQueue?.orders?.length || 0} Orders Total)
+                      </h3>
+                      {fulfillmentMsg && <p className="text-xs font-bold text-emerald-700">{fulfillmentMsg}</p>}
+                    </div>
+
+                    {(() => {
+                      const filteredDispatchOrders = (opsQueue?.orders || []).filter((order: any) => {
+                        const matchesStatus = dispatchStatusFilter === "ALL" || order.status === dispatchStatusFilter;
+                        const searchLower = dispatchSearchTerm.toLowerCase().trim();
+                        const matchesSearch = !searchLower || 
+                          (order.customerName || "").toLowerCase().includes(searchLower) ||
+                          (order.phone || "").includes(searchLower) ||
+                          (order.address || "").toLowerCase().includes(searchLower) ||
+                          (order.pincode || "").includes(searchLower) ||
+                          String(order._id).toLowerCase().includes(searchLower);
+
+                        return matchesStatus && matchesSearch;
+                      });
+
+                      if (filteredDispatchOrders.length === 0) {
+                        return (
+                          <div className="p-8 text-center text-slate-400 font-bold bg-slate-50 rounded-xl border border-slate-200">
+                            No orders match your filter criteria ({dispatchStatusFilter} status / "{dispatchSearchTerm}").
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <ul className="divide-y divide-slate-100 text-xs space-y-4">
+                          {filteredDispatchOrders.map((order: any) => (
+                            <li key={order._id} className="pt-4 space-y-3">
+                              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                                  <div>
+                                    <div className="flex items-center gap-2">
+                                      <span className="font-mono font-extrabold text-slate-900 text-sm">
+                                        Order #{String(order._id).substring(String(order._id).length - 6).toUpperCase()}
+                                      </span>
+                                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                                        order.status === "Delivered"
+                                          ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                                          : order.status === "Out for Delivery"
+                                          ? "bg-blue-100 text-blue-800 border border-blue-300"
+                                          : order.status === "Failed Delivery"
+                                          ? "bg-red-100 text-red-700 border border-red-200"
+                                          : "bg-amber-100 text-amber-800 border border-amber-200"
+                                      }`}>
+                                        {order.status}
+                                      </span>
+                                      {order.isSubscriptionGenerated && (
+                                        <span className="bg-purple-100 text-purple-800 font-bold text-[10px] px-2 py-0.5 rounded border border-purple-200">
+                                          Subscription Batch
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-xs text-slate-900 font-extrabold mt-1">
+                                      👤 Customer: {order.customerName} (📞 {order.phone})
+                                    </p>
+                                    <p className="text-xs text-slate-700 font-semibold mt-0.5">
+                                      🏡 Address: {order.address} — <strong className="text-slate-900">Pincode {order.pincode}</strong>
+                                    </p>
+                                  </div>
+
+                                  <div className="text-right shrink-0">
+                                    <span className="text-[10px] text-slate-400 font-bold uppercase block">Delivery Target</span>
+                                    <span className="font-bold text-emerald-700 text-xs">
+                                      {new Date(order.deliveryDate).toLocaleDateString()} (07:00 AM)
+                                    </span>
+                                    <span className="font-black text-slate-900 text-sm block mt-0.5">
+                                      ₹{order.totalAmount}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Produce Items Summary */}
+                                <div className="bg-white p-3 rounded-lg border border-slate-200 space-y-1.5">
+                                  <p className="text-[10px] font-bold text-slate-500 uppercase">Route Produce Crate Items:</p>
+                                  <div className="space-y-1">
+                                    {order.products?.map((p: any, i: number) => (
+                                      <div key={i} className="flex justify-between items-center text-xs">
+                                        <span className="font-semibold text-slate-800">
+                                          • {p.name} x{p.qty} ({p.unit})
+                                          {p.substitutedName && <span className="ml-1 text-amber-700 font-bold">(Substituted: {p.substitutedName})</span>}
+                                        </span>
+                                        <span className="bg-slate-100 text-slate-700 font-bold text-[10px] px-2 py-0.5 rounded">
+                                          {p.fulfillmentStatus || "Pending"}
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {/* Doorstep Delivery Transition Action Controls */}
+                                <div className="pt-2 flex flex-wrap gap-2 border-t border-slate-200">
                                   <button
-                                    onClick={() => handleItemFulfillment(order._id, i, "Harvested")}
-                                    className="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[11px] px-2.5 py-1 rounded border border-emerald-200 transition"
+                                    onClick={() => handleDispatchOrder(order._id)}
+                                    className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition shadow-sm flex items-center gap-1"
                                   >
-                                    Harvested 🥦
+                                    <span>Out for Delivery 🚚</span>
                                   </button>
                                   <button
-                                    onClick={() => handleItemFulfillment(order._id, i, "Packed")}
-                                    className="bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold text-[11px] px-2.5 py-1 rounded border border-blue-200 transition"
+                                    onClick={() => handleDeliverOrder(order._id)}
+                                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition shadow-sm flex items-center gap-1"
                                   >
-                                    Packed 📦
+                                    <span>Mark Delivered 🏡 (7 AM SLA)</span>
                                   </button>
                                   <button
-                                    onClick={() => handleApplySubstitution(order._id, i)}
-                                    className="bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-[11px] px-2.5 py-1 rounded border border-amber-200 transition"
+                                    onClick={() => handleFailedDelivery(order._id)}
+                                    className="bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs px-3 py-1.5 rounded-xl border border-red-200 transition"
                                   >
-                                    Substitute 🔄
+                                    <span>Failed Delivery ⚠️</span>
                                   </button>
                                 </div>
                               </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Order Stage Transition Action Bar */}
-                        <div className="pt-2 flex flex-wrap gap-2 border-t border-slate-200">
-                          <button
-                            onClick={() => handleCutoffLock(order._id)}
-                            className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition"
-                          >
-                            Lock Cutoff (9:30 PM) 🔒
-                          </button>
-                          <button
-                            onClick={() => handleDispatchOrder(order._id)}
-                            className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition"
-                          >
-                            Out for Delivery 🚚
-                          </button>
-                          <button
-                            onClick={() => handleDeliverOrder(order._id)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition"
-                          >
-                            Mark Delivered 🏡 (7 AM SLA)
-                          </button>
-                          <button
-                            onClick={() => handleFailedDelivery(order._id)}
-                            className="bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs px-3 py-1.5 rounded-lg border border-red-200 transition"
-                          >
-                            Failed Delivery ⚠️
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-
-
-                  </ul>
+                            </li>
+                          ))}
+                        </ul>
+                      );
+                    })()}
+                  </div>
                 </div>
               )}
-            </div>
 
-          {/* TAB 2: DISPATCH MANAGER */}
+              {/* TAB 3: QUALITY REPORTS */}
+              {opsTab === "issues" && (
+                <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 gap-2">
+                    <h2 className="text-lg font-bold text-slate-900">⚠️ Route Quality Defect Tickets</h2>
+                    <span className="text-xs font-bold bg-amber-100 text-amber-900 px-3 py-1 rounded-full border border-amber-300">
+                      {myIssues.length} Total Route Claims
+                    </span>
+                  </div>
 
-          {opsTab === "dispatches" && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-              <div className="flex justify-between items-center border-b pb-4">
-                <div>
-                  <h2 className="text-lg font-bold text-slate-900">🛵 Logistics & Vehicle Dispatch Manager</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">Route Batch: {opsQueue?.zone?.name || "Lucknow Route"}</p>
-                </div>
-                <span className="bg-amber-100 text-amber-900 font-extrabold text-xs px-3 py-1 rounded-full border border-amber-300">
-                  Target Dispatch: 04:30 AM
-                </span>
-              </div>
+                  {/* Quality Reports Filter Bar */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 p-4 rounded-xl border border-slate-200 gap-3">
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                      <span className="font-bold text-slate-700">Filter Status:</span>
+                      {["ALL", "OPEN", "RESOLVED", "REJECTED"].map((st) => (
+                        <button
+                          key={st}
+                          onClick={() => setIssueStatusFilter(st)}
+                          className={`px-3 py-1 rounded-lg font-bold transition text-xs ${
+                            issueStatusFilter === st
+                              ? "bg-slate-900 text-white shadow-sm"
+                              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                          }`}
+                        >
+                          {st === "OPEN" ? "Pending / Open" : st === "RESOLVED" ? "Resolved / Refunded" : st}
+                        </button>
+                      ))}
+                    </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                  <p className="text-slate-400 font-bold uppercase text-[10px]">Total Packed Crates</p>
-                  <p className="text-2xl font-black text-slate-900 mt-1">
-                    {opsQueue?.orders?.filter((o: any) => o.status === "Packed" || o.status === "Out for Delivery" || o.status === "Delivered").length || 0}
-                  </p>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
-                  <p className="text-blue-600 font-bold uppercase text-[10px]">Out for Delivery</p>
-                  <p className="text-2xl font-black text-blue-900 mt-1">
-                    {opsQueue?.orders?.filter((o: any) => o.status === "Out for Delivery").length || 0}
-                  </p>
-                </div>
-                <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
-                  <p className="text-emerald-700 font-bold uppercase text-[10px]">Completed Deliveries</p>
-                  <p className="text-2xl font-black text-emerald-900 mt-1">
-                    {opsQueue?.orders?.filter((o: any) => o.status === "Delivered").length || 0}
-                  </p>
-                </div>
-              </div>
+                    <input
+                      type="text"
+                      placeholder="Search product, customer, description..."
+                      value={issueSearchTerm}
+                      onChange={(e) => setIssueSearchTerm(e.target.value)}
+                      className="w-full sm:w-60 px-3 py-1.5 text-xs rounded-xl border border-slate-300 text-slate-900 bg-white outline-none focus:ring-2 focus:ring-slate-900"
+                    />
+                  </div>
 
-              {/* Route Order Manifest List & Doorstep Action Controls */}
+                  {(() => {
+                    const filteredQualityIssues = myIssues.filter((iss: any) => {
+                      let matchesStatus = true;
+                      if (issueStatusFilter === "OPEN") {
+                        matchesStatus = iss.status === "PENDING" || iss.status === "OPEN" || !iss.status;
+                      } else if (issueStatusFilter === "RESOLVED") {
+                        matchesStatus = String(iss.status || "").startsWith("RESOLVED");
+                      } else if (issueStatusFilter === "REJECTED") {
+                        matchesStatus = iss.status === "REJECTED";
+                      }
 
-              <div className="pt-4 space-y-4">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 pb-3 gap-2">
-                  <h3 className="font-extrabold text-slate-900 text-sm flex items-center gap-2">
-                    <span>🚚</span> Route Delivery Manifest ({opsQueue?.orders?.length || 0} Orders)
-                  </h3>
-                  {fulfillmentMsg && <p className="text-xs font-bold text-emerald-700">{fulfillmentMsg}</p>}
-                </div>
+                      const searchLower = issueSearchTerm.toLowerCase().trim();
+                      const matchesSearch = !searchLower ||
+                        (iss.productName || "").toLowerCase().includes(searchLower) ||
+                        (iss.description || "").toLowerCase().includes(searchLower) ||
+                        (iss.issueType || "").toLowerCase().includes(searchLower) ||
+                        (iss.user?.name || "").toLowerCase().includes(searchLower) ||
+                        (iss.user?.email || "").toLowerCase().includes(searchLower);
 
-                {!opsQueue?.orders || opsQueue.orders.length === 0 ? (
-                  <div className="p-8 text-center text-slate-400 font-bold">No orders assigned to your route queue yet.</div>
-                ) : (
-                  <ul className="divide-y divide-slate-100 text-xs space-y-4">
-                    {opsQueue.orders.map((order: any) => (
-                      <li key={order._id} className="pt-4 space-y-3">
-                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <span className="font-mono font-extrabold text-slate-900 text-sm">
-                                  Order #{String(order._id).substring(String(order._id).length - 6).toUpperCase()}
-                                </span>
-                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                                  order.status === "Delivered"
-                                    ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
-                                    : order.status === "Out for Delivery"
-                                    ? "bg-blue-100 text-blue-800 border border-blue-300"
-                                    : order.status === "Failed Delivery"
-                                    ? "bg-red-100 text-red-700 border border-red-200"
-                                    : "bg-amber-100 text-amber-800 border border-amber-200"
-                                }`}>
-                                  {order.status}
-                                </span>
-                                {order.isSubscriptionGenerated && (
-                                  <span className="bg-purple-100 text-purple-800 font-bold text-[10px] px-2 py-0.5 rounded border border-purple-200">
-                                    Subscription Batch
+                      return matchesStatus && matchesSearch;
+                    });
+
+                    if (filteredQualityIssues.length === 0) {
+                      return (
+                        <div className="p-8 text-center text-slate-400 font-bold bg-slate-50 rounded-xl border border-slate-200">
+                          {myIssues.length === 0
+                            ? "No active quality defects reported for your route."
+                            : `No defect tickets match your search/filter criteria (${issueStatusFilter} status / "${issueSearchTerm}").`}
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <ul className="divide-y divide-slate-100 text-xs">
+                        {filteredQualityIssues.map((iss: any) => (
+                          <li key={iss._id} className="py-4 space-y-2">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <span className="font-extrabold text-slate-900 text-sm">{iss.productName}</span>
+                                  <span className="bg-amber-100 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-200">
+                                    {iss.issueType}
                                   </span>
+                                  <span
+                                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                                      iss.status === "RESOLVED_WALLET_CREDIT" || iss.status === "RESOLVED_REFUND"
+                                        ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                                        : iss.status === "REJECTED"
+                                        ? "bg-red-100 text-red-700 border border-red-200"
+                                        : "bg-amber-100 text-amber-800 border border-amber-200"
+                                    }`}
+                                  >
+                                    {iss.status}
+                                  </span>
+                                </div>
+                                <p className="text-slate-600 text-xs mt-1">"{iss.description}"</p>
+                                {iss.user && (
+                                  <p className="text-slate-500 text-[11px] mt-0.5 font-semibold">
+                                    👤 Customer: {iss.user.name} ({iss.user.email})
+                                  </p>
                                 )}
                               </div>
-                              <p className="text-xs text-slate-900 font-extrabold mt-1">
-                                👤 Customer: {order.customerName} (📞 {order.phone})
-                              </p>
-                              <p className="text-xs text-slate-700 font-semibold mt-0.5">
-                                🏡 Address: {order.address} — <strong className="text-slate-900">Pincode {order.pincode}</strong>
-                              </p>
+
+                              <div className="flex items-center gap-2 shrink-0">
+                                {iss.photoUrl && (
+                                  <button
+                                    onClick={() => setViewPhotoUrl(iss.photoUrl)}
+                                    className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-3 py-1.5 rounded-xl transition shadow-sm flex items-center gap-1"
+                                  >
+                                    <span>📷 View Defect Photo</span>
+                                  </button>
+                                )}
+                              </div>
                             </div>
-
-                            <div className="text-right shrink-0">
-                              <span className="text-[10px] text-slate-400 font-bold uppercase block">Delivery Target</span>
-                              <span className="font-bold text-emerald-700 text-xs">
-                                {new Date(order.deliveryDate).toLocaleDateString()} (07:00 AM)
-                              </span>
-                              <span className="font-black text-slate-900 text-sm block mt-0.5">
-                                ₹{order.totalAmount}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Produce Items Summary */}
-                          <div className="bg-white p-3 rounded-lg border border-slate-200 space-y-1.5">
-                            <p className="text-[10px] font-bold text-slate-500 uppercase">Route Produce Crate Items:</p>
-                            <div className="space-y-1">
-                              {order.products?.map((p: any, i: number) => (
-                                <div key={i} className="flex justify-between items-center text-xs">
-                                  <span className="font-semibold text-slate-800">
-                                    • {p.name} x{p.qty} ({p.unit})
-                                    {p.substitutedName && <span className="ml-1 text-amber-700 font-bold">(Substituted: {p.substitutedName})</span>}
-                                  </span>
-                                  <span className="bg-slate-100 text-slate-700 font-bold text-[10px] px-2 py-0.5 rounded">
-                                    {p.fulfillmentStatus || "Pending"}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Doorstep Delivery Transition Action Controls */}
-                          <div className="pt-2 flex flex-wrap gap-2 border-t border-slate-200">
-                            <button
-                              onClick={() => handleDispatchOrder(order._id)}
-                              className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition shadow-sm flex items-center gap-1"
-                            >
-                              <span>Out for Delivery 🚚</span>
-                            </button>
-                            <button
-                              onClick={() => handleDeliverOrder(order._id)}
-                              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition shadow-sm flex items-center gap-1"
-                            >
-                              <span>Mark Delivered 🏡 (7 AM SLA)</span>
-                            </button>
-                            <button
-                              onClick={() => handleFailedDelivery(order._id)}
-                              className="bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs px-3 py-1.5 rounded-xl border border-red-200 transition"
-                            >
-                              <span>Failed Delivery ⚠️</span>
-                            </button>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-          )}
-
-
-          {/* TAB 3: QUALITY REPORTS */}
-          {opsTab === "issues" && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-              <h2 className="text-lg font-bold text-slate-900 border-b pb-3">⚠️ Route Quality Defect Tickets</h2>
-              {myIssues.length === 0 ? (
-                <div className="p-8 text-center text-slate-400 font-bold">No active quality defects reported for your route.</div>
-              ) : (
-                <ul className="divide-y divide-slate-100 text-xs">
-                  {myIssues.map((iss: any) => (
-                    <li key={iss._id} className="py-4 space-y-2">
-                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-extrabold text-slate-900 text-sm">{iss.productName}</span>
-                            <span className="bg-amber-100 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-200">
-                              {iss.issueType}
-                            </span>
-                            <span
-                              className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                                iss.status === "RESOLVED_WALLET_CREDIT" || iss.status === "RESOLVED_REFUND"
-                                  ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
-                                  : iss.status === "REJECTED"
-                                  ? "bg-red-100 text-red-700 border border-red-200"
-                                  : "bg-amber-100 text-amber-800 border border-amber-200"
-                              }`}
-                            >
-                              {iss.status}
-                            </span>
-                          </div>
-                          <p className="text-slate-600 text-xs mt-1">"{iss.description}"</p>
-                          {iss.user && (
-                            <p className="text-slate-500 text-[11px] mt-0.5 font-semibold">
-                              👤 Customer: {iss.user.name} ({iss.user.email})
-                            </p>
-                          )}
-                        </div>
-
-                        <div className="flex items-center gap-2 shrink-0">
-                          {iss.photoUrl && (
-                            <button
-                              onClick={() => setViewPhotoUrl(iss.photoUrl)}
-                              className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-3 py-1.5 rounded-xl transition shadow-sm flex items-center gap-1"
-                            >
-                              <span>📷 View Defect Photo</span>
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                          </li>
+                        ))}
+                      </ul>
+                    );
+                  })()}
+                </div>
               )}
-            </div>
+            </>
           )}
 
         {/* PHOTO VIEWER LIGHTBOX MODAL (FOR DELIVERY OPS) */}
@@ -1084,8 +1230,6 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-        )}
-        </>
         )}
         </div>
       </AppShell>
@@ -1579,7 +1723,7 @@ export default function Dashboard() {
           <div className="bg-gradient-to-r from-emerald-900 to-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <span className="bg-emerald-500 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                FarmFresh Prepaid Wallet
+                The Farm Brothers Prepaid Wallet
               </span>
               <p className="text-xs text-emerald-200 mt-2">Available Refund Credits for Next Checkout</p>
               <h2 className="text-3xl font-black mt-1">₹{walletBalance.toFixed(2)}</h2>

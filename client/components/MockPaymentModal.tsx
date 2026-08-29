@@ -68,7 +68,7 @@ export default function MockPaymentModal({
               Phase 13 — Simulated Integration
             </span>
             <h3 className="text-lg font-black text-slate-900 mt-1 flex items-center gap-2">
-              <span>💳</span> FarmFresh Mock Payment Gateway
+              <span>💳</span> The Farm Brothers Payment Gateway
             </h3>
             <p className="text-[11px] text-slate-500">
               Simulates real-time payment gateway request/response payload settlement & DB synchronization.
@@ -110,7 +110,7 @@ export default function MockPaymentModal({
               { id: "MOCK_UPI", name: "📲 MOCK UPI / QR Code", desc: "Google Pay / PhonePe / BHIM" },
               { id: "MOCK_CARD", name: "💳 MOCK Credit / Debit Card", desc: "Visa / MasterCard / RuPay" },
               { id: "MOCK_NET_BANKING", name: "🏦 MOCK Net Banking", desc: "HDFC / ICICI / SBI" },
-              { id: "MOCK_WALLET", name: "👛 Prepaid Wallet Credit", desc: "FarmFresh Wallet Credits" },
+              { id: "MOCK_WALLET", name: "👛 Prepaid Wallet Credit", desc: "The Farm Brothers Wallet Credits" },
             ].map((m) => (
               <button
                 key={m.id}

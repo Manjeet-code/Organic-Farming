@@ -28,16 +28,21 @@ export default function Footer() {
         {/* Main Footer Links */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
           <div className="col-span-2 md:col-span-2 space-y-6 pr-0 md:pr-10">
-            <div className="flex items-center gap-2 cursor-pointer">
-              <div className="bg-green-500/20 p-2 rounded-full border border-green-500/30">
-                <span className="text-2xl">🌿</span>
+            <div className="flex items-center gap-3 cursor-pointer">
+              <div className="relative w-11 h-11 rounded-xl overflow-hidden bg-emerald-950 p-1.5 border border-emerald-800 shadow-sm flex items-center justify-center">
+                <img src="/icon.png" alt="The Farm Brothers Logo" className="w-full h-full object-contain" />
               </div>
-              <h2 className="text-3xl font-black tracking-tighter">
-                Agro<span className="text-green-500 font-bold">Organic</span>
-              </h2>
+              <div>
+                <h2 className="text-2xl font-black text-white tracking-tight leading-none">
+                  THE FARM <span className="text-emerald-400 font-extrabold">BROTHERS</span>
+                </h2>
+                <span className="text-[10px] font-medium text-emerald-300 tracking-wider uppercase mt-1 block">
+                  From Our Farm For Your Family
+                </span>
+              </div>
             </div>
             <p className="text-slate-400 leading-relaxed text-sm">
-              Bringing farm-fresh dairy, 100% organic vegetables, and premium fruits directly from our village to your doorstep. Healthy, sustainable living made simple.
+              Growing Good. Growing Together. Bringing farm-fresh A2 dairy, 100% organic produce, vermicompost, and natural spices directly from Lal Balram Organic Farm to your doorstep.
             </p>
             {/* Social Icons */}
             <div className="flex gap-4 pt-4">
@@ -56,37 +61,37 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-bold mb-6 tracking-wide">Shop</h3>
             <ul className="space-y-4 text-slate-400 text-sm">
-              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Dairy Products</a></li>
+              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Dairy & A2 Milk</a></li>
               <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Fresh Vegetables</a></li>
-              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Organic Fruits</a></li>
-              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Weekly Subscriptions</a></li>
+              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Vermicompost</a></li>
+              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Natural Produce</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-white font-bold mb-6 tracking-wide">Company</h3>
             <ul className="space-y-4 text-slate-400 text-sm">
-              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Our Story</a></li>
+              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Our Farm Story</a></li>
               <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Partner Farmers</a></li>
-              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Careers</a></li>
+              <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Sustainable Practices</a></li>
               <li><a href="#" className="hover:text-green-400 hover:translate-x-1 inline-block transition-transform">Press & Media</a></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-white font-bold mb-6 tracking-wide">Support</h3>
+            <h3 className="text-white font-bold mb-6 tracking-wide">Contact Us</h3>
             <ul className="space-y-4 text-slate-400 text-sm">
               <li className="flex items-start gap-3">
                 <span className="text-green-500 mt-0.5">📍</span> 
-                <span className="leading-relaxed">123 Organic Farms Road, <br/>Mumbai, Maharashtra 400001</span>
+                <span className="leading-relaxed">Lal Balram Organic Farm, <br/>Arwal, Bihar - 804401</span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-green-500">📞</span> 
-                <span>+91 98765 43210</span>
+                <span>+91 85444 88617</span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-green-500">✉️</span> 
-                <span>hello@agroorganic.com</span>
+                <span>hello@thefarmbrothers.com</span>
               </li>
             </ul>
           </div>
@@ -94,7 +99,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-slate-800/80 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500 gap-4">
-          <p>© 2026 AgroOrganic Store. All rights reserved.</p>
+          <p>© 2026 The Farm Brothers. All rights reserved.</p>
           <div className="flex flex-wrap justify-center gap-6">
             <a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="/terms" className="hover:text-white transition-colors">Terms of Service</a>
