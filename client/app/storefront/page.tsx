@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import AppShell from "../../components/AppShell";
 import { useCart, ProductType } from "../../context/CartContext";
 import axios from "axios";
+import { API_BASE_URL } from "../../context/AuthContext";
 
 export default function Storefront() {
   const { cart, addToCart, updateQuantity, toggleCart } = useCart();
@@ -26,7 +27,7 @@ export default function Storefront() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/products");
+      const { data } = await axios.get(`${API_BASE_URL}/api/products`);
       setProducts(data);
     } catch (err) {
       console.error("Failed to fetch catalog products", err);
@@ -40,7 +41,7 @@ export default function Storefront() {
     setCheckingPincode(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/zones/serviceability/${pincode.trim()}`
+        `${API_BASE_URL}/api/zones/serviceability/${pincode.trim()}`
       );
       setServiceabilityResult(data);
     } catch (err) {

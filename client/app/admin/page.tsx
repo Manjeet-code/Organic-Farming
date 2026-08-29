@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth, API_BASE_URL } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import AppShell from "../../components/AppShell";
@@ -94,7 +94,7 @@ export default function AdminPanel() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/cutoff-lock`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/cutoff-lock`,
         { remarks: "Locked cutoff stage by Super Admin" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -110,7 +110,7 @@ export default function AdminPanel() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/items/${itemIndex}`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/items/${itemIndex}`,
         { fulfillmentStatus, remarks: `Marked ${fulfillmentStatus} by Super Admin` },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -127,7 +127,7 @@ export default function AdminPanel() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.post(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/substitute`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/substitute`,
         { itemIndex, remarks: "Original produce out of stock, substitute applied by Admin" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -143,7 +143,7 @@ export default function AdminPanel() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/dispatch`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/dispatch`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -159,7 +159,7 @@ export default function AdminPanel() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/deliver`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/deliver`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -175,7 +175,7 @@ export default function AdminPanel() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/orders/${orderId}/cancel`,
+        `${API_BASE_URL}/api/orders/${orderId}/cancel`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -203,7 +203,7 @@ export default function AdminPanel() {
     setLoadingAuditLogs(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/audit-logs?action=${auditActionFilter}`,
+        `${API_BASE_URL}/api/audit-logs?action=${auditActionFilter}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAuditLogs(data.auditLogs || []);
@@ -228,12 +228,12 @@ export default function AdminPanel() {
 
     setLoadingAnalytics(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/analytics/overview", {
+      const { data } = await axios.get(`${API_BASE_URL}/api/analytics/overview`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAnalyticsData(data);
     } catch (e) {
-      console.error("Failed to fetch analytics");
+      console.log("Failed to fetch analytics");
     } finally {
       setLoadingAnalytics(false);
     }
@@ -250,12 +250,12 @@ export default function AdminPanel() {
 
     setLoadingPaymentTxs(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/payments/all-transactions", {
+      const { data } = await axios.get(`${API_BASE_URL}/api/payments/all-transactions`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPaymentTransactions(data || []);
     } catch (e) {
-      console.error("Failed to fetch payment transactions");
+      console.log("Failed to fetch payment transactions");
     } finally {
       setLoadingPaymentTxs(false);
     }
@@ -268,12 +268,12 @@ export default function AdminPanel() {
 
     setLoadingIssues(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/issues/all", {
+      const { data } = await axios.get(`${API_BASE_URL}/api/issues/all`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAllIssues(data);
-    } catch (error) {
-      console.error("Failed to fetch quality claims");
+    } catch (e) {
+      console.log("Failed to fetch quality defect issues");
     } finally {
       setLoadingIssues(false);
     }
@@ -316,7 +316,7 @@ export default function AdminPanel() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/issues/${issueId}/resolve`,
+        `${API_BASE_URL}/api/issues/${issueId}/resolve`,
         { resolutionAction, refundAmount, adminRemarks: remarks },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -334,7 +334,7 @@ export default function AdminPanel() {
 
     setLoadingDispatch(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/dispatch/zone-summary", {
+      const { data } = await axios.get("${API_BASE_URL}/api/dispatch/zone-summary", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDispatchSummary(data);
@@ -351,7 +351,7 @@ export default function AdminPanel() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/dispatch/orders/${orderId}/reassign-zone`,
+        `${API_BASE_URL}/api/dispatch/orders/${orderId}/reassign-zone`,
         { newZoneId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -367,7 +367,7 @@ export default function AdminPanel() {
   const fetchProducts = async () => {
     setLoadingProducts(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/products?adminAll=true");
+      const { data } = await axios.get(`${API_BASE_URL}/api/products?adminAll=true`);
       setProducts(data);
     } catch (error) {
       console.error("Failed to fetch catalog products");
@@ -379,7 +379,7 @@ export default function AdminPanel() {
   const fetchZones = async () => {
     setLoadingZones(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/zones");
+      const { data } = await axios.get(`${API_BASE_URL}/api/zones`);
       setZones(data);
     } catch (error) {
       console.error("Failed to fetch zones");
@@ -391,7 +391,7 @@ export default function AdminPanel() {
   const fetchOrders = async () => {
     setLoadingOrders(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/orders/all");
+      const { data } = await axios.get(`${API_BASE_URL}/api/orders/all`);
       setOrders(data);
     } catch (error) {
       console.error("Failed to fetch orders");
@@ -420,10 +420,10 @@ export default function AdminPanel() {
       };
 
       if (editingProduct) {
-        await axios.put(`http://localhost:5000/api/products/${editingProduct._id}`, payload);
+        await axios.put(`${API_BASE_URL}/api/products/${editingProduct._id}`, payload);
         setProdMsg("✅ Product updated successfully!");
       } else {
-        await axios.post("http://localhost:5000/api/products", payload);
+        await axios.post(`${API_BASE_URL}/api/products`, payload);
         setProdMsg("✅ Product added to catalog!");
       }
 
@@ -437,7 +437,7 @@ export default function AdminPanel() {
   // Phase 4: Toggle "Today's Harvest" Availability
   const handleToggleAvailability = async (id: string) => {
     try {
-      await axios.put(`http://localhost:5000/api/products/${id}/toggle-availability`);
+      await axios.put(`${API_BASE_URL}/api/products/${id}/toggle-availability`);
       fetchProducts();
     } catch (err) {
       console.error("Failed to toggle product availability");
@@ -453,7 +453,7 @@ export default function AdminPanel() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.delete(
-        `http://localhost:5000/api/products/${productId}`,
+        `${API_BASE_URL}/api/products/${productId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert(`✅ ${data.message}`);
@@ -530,10 +530,10 @@ export default function AdminPanel() {
       };
 
       if (editingZone) {
-        await axios.put(`http://localhost:5000/api/zones/${editingZone._id}`, payload);
+        await axios.put(`${API_BASE_URL}/api/zones/${editingZone._id}`, payload);
         setZoneMsg("✅ Zone updated successfully!");
       } else {
-        await axios.post("http://localhost:5000/api/zones", payload);
+        await axios.post(`${API_BASE_URL}/api/zones`, payload);
         setZoneMsg("✅ Delivery zone created successfully!");
       }
 
@@ -546,7 +546,7 @@ export default function AdminPanel() {
 
   const handleToggleZoneStatus = async (id: string) => {
     try {
-      await axios.put(`http://localhost:5000/api/zones/${id}/toggle-status`);
+      await axios.put(`${API_BASE_URL}/api/zones/${id}/toggle-status`);
       fetchZones();
     } catch (err) {
       console.error("Failed to toggle zone status");
@@ -562,7 +562,7 @@ export default function AdminPanel() {
 
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/zones/serviceability/${testPincode.trim()}`
+        `${API_BASE_URL}/api/zones/serviceability/${testPincode.trim()}`
       );
       setLookupResult(data);
     } catch (err) {
@@ -578,7 +578,7 @@ export default function AdminPanel() {
     setOpsMsg("");
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/auth/create-ops", {
+      const { data } = await axios.post(`${API_BASE_URL}/api/auth/create-ops`, {
         name: opsName,
         email: opsEmail,
         password: opsPassword,

@@ -26,10 +26,14 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  login: () => {},
-  updateUser: () => {},
-  logout: () => {},
+  login: () => { },
+  updateUser: () => { },
+  logout: () => { },
 });
+
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://the-farm-brothers.onrender.com";
+axios.defaults.baseURL = API_BASE_URL;
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

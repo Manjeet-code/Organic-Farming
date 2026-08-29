@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import axios from "axios";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth, API_BASE_URL } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function Register() {
@@ -25,7 +25,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/auth/register", {
+      const { data } = await axios.post(`${API_BASE_URL}/api/auth/register`, {
         name,
         email,
         password,

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../context/AuthContext";
 
 interface MockPaymentModalProps {
   orderId: string;
@@ -31,7 +32,7 @@ export default function MockPaymentModal({
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.post(
-        "http://localhost:5000/api/payments/process-checkout",
+        `${API_BASE_URL}/api/payments/process-checkout`,
         {
           orderId,
           amount,

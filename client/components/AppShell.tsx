@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../context/AuthContext";
+import { useAuth, API_BASE_URL } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import CartDrawer from "./CartDrawer";
 import Logo from "./Logo";
@@ -38,7 +38,7 @@ export default function AppShell({
     if (!token) return;
 
     try {
-      const { data } = await axios.get("http://localhost:5000/api/notifications", {
+      const { data } = await axios.get(`${API_BASE_URL}/api/notifications`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotifications(data.notifications || []);
@@ -61,7 +61,7 @@ export default function AppShell({
     if (!token) return;
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/notifications/${notifId}/read`,
+        `${API_BASE_URL}/api/notifications/${notifId}/read`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -79,7 +79,7 @@ export default function AppShell({
     if (!token) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/notifications/read-all`,
+        `${API_BASE_URL}/api/notifications/read-all`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

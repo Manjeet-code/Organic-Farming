@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth, API_BASE_URL } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Logo from "@/components/Logo";
 
@@ -20,7 +20,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/auth/login", {
+      const { data } = await axios.post(`${API_BASE_URL}/api/auth/login`, {
         email: emailToUse,
         password: passwordToUse,
       });

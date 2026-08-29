@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth, API_BASE_URL } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import AppShell from "../../components/AppShell";
@@ -114,7 +114,7 @@ export default function Dashboard() {
 
     setLoadingClaims(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/issues/my-issues", {
+      const { data } = await axios.get(`${API_BASE_URL}/api/issues/my-issues`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setWalletBalance(data.walletBalance || 0);
@@ -145,7 +145,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.post(
-        "http://localhost:5000/api/issues",
+        `${API_BASE_URL}/api/issues`,
         {
           orderId: reportOrderId,
           productName: reportProductName,
@@ -171,13 +171,13 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.get(
-        `http://localhost:5000/api/dispatch/my-zone-queue?category=${selectedCategory}`,
+        `${API_BASE_URL}/api/dispatch/my-zone-queue?category=${selectedCategory}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setOpsQueue(data);
 
       // Fetch quality defect claims for Ops Quality Reports tab
-      const issuesRes = await axios.get("http://localhost:5000/api/issues/all", {
+      const issuesRes = await axios.get(`${API_BASE_URL}/api/issues/all`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMyIssues(issuesRes.data || []);
@@ -194,7 +194,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/cutoff-lock`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/cutoff-lock`,
         { remarks: "9:30 PM cutoff locked for tonight harvest & packing batch" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -210,7 +210,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/items/${itemIndex}`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/items/${itemIndex}`,
         { fulfillmentStatus, remarks: `Marked ${fulfillmentStatus} by ops staff` },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -226,7 +226,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.post(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/substitute`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/substitute`,
         { itemIndex, remarks: "Original produce out of stock, substitute applied" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -242,7 +242,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/dispatch`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/dispatch`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -270,7 +270,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/deliver`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/deliver`,
         { deliveryProofPhoto: photo, deliveryProofRemarks: remarks },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -288,7 +288,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/deliver`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/deliver`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -307,7 +307,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       const { data } = await axios.put(
-        `http://localhost:5000/api/fulfillment/orders/${orderId}/failed`,
+        `${API_BASE_URL}/api/fulfillment/orders/${orderId}/failed`,
         { failureReason: reason, reattemptScheduled: true },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -323,7 +323,7 @@ export default function Dashboard() {
   const fetchOrders = async () => {
     setLoadingOrders(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/orders/my-orders");
+      const { data } = await axios.get(`${API_BASE_URL}/api/orders/my-orders`);
       setOrders(data);
     } catch (error) {
       console.log("No orders found");
@@ -335,7 +335,7 @@ export default function Dashboard() {
   const fetchSubscriptions = async () => {
     setLoadingSubs(true);
     try {
-      const { data } = await axios.get("http://localhost:5000/api/subscriptions/my-subscriptions");
+      const { data } = await axios.get(`${API_BASE_URL}/api/subscriptions/my-subscriptions`);
       setSubscriptions(data);
     } catch (error) {
       console.log("No subscriptions found");
@@ -347,7 +347,7 @@ export default function Dashboard() {
   const handleCancelOrder = async (orderId: string) => {
     setOrderMsg("");
     try {
-      await axios.put(`http://localhost:5000/api/orders/${orderId}/cancel`);
+      await axios.put(`${API_BASE_URL}/api/orders/${orderId}/cancel`);
       setOrderMsg("✅ Order cancelled successfully before 9:30 PM cutoff.");
       fetchOrders();
     } catch (err: any) {
@@ -358,7 +358,7 @@ export default function Dashboard() {
   const handlePauseSub = async (subId: string) => {
     setSubMsg("");
     try {
-      await axios.put(`http://localhost:5000/api/subscriptions/${subId}/pause`);
+      await axios.put(`${API_BASE_URL}/api/subscriptions/${subId}/pause`);
       setSubMsg("✅ Subscription pause state toggled successfully!");
       fetchSubscriptions();
     } catch (err: any) {
@@ -370,7 +370,7 @@ export default function Dashboard() {
     if (!skipDateInput.trim()) return;
     setSubMsg("");
     try {
-      const { data } = await axios.post(`http://localhost:5000/api/subscriptions/${subId}/skip-day`, {
+      const { data } = await axios.post(`${API_BASE_URL}/api/subscriptions/${subId}/skip-day`, {
         dateString: skipDateInput.trim(),
       });
       setSubMsg(`✅ ${data.message}`);
@@ -445,7 +445,7 @@ export default function Dashboard() {
     setProfileMsg("");
 
     try {
-      const { data } = await axios.put("http://localhost:5000/api/auth/profile", {
+      const { data } = await axios.put(`${API_BASE_URL}/api/auth/profile`, {
         phone,
         address,
         pincode,

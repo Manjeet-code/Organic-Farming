@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
+import { useAuth, API_BASE_URL } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -34,7 +34,7 @@ export default function CartDrawer() {
     try {
       const token = localStorage.getItem("farmfresh_token");
       if (!token) return;
-      const { data } = await axios.get("http://localhost:5000/api/issues/my-issues", {
+      const { data } = await axios.get(`${API_BASE_URL}/api/issues/my-issues`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setWalletBalance(data.walletBalance || 0);
@@ -58,7 +58,7 @@ export default function CartDrawer() {
         const creditToApply = Math.min(subtotal, walletBalance);
         const token = localStorage.getItem("farmfresh_token");
         await axios.post(
-          "http://localhost:5000/api/issues/apply-wallet",
+          `${API_BASE_URL}/api/issues/apply-wallet`,
           { amountToDeduct: creditToApply },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -80,8 +80,8 @@ export default function CartDrawer() {
         };
 
         const config = user ? { headers: { Authorization: `Bearer ${localStorage.getItem("farmfresh_token")}` } } : {};
-        await axios.post("http://localhost:5000/api/subscriptions", subPayload, config);
-        await axios.post("http://localhost:5000/api/subscriptions/generate-daily-orders", {}, config);
+        await axios.post(`${API_BASE_URL}/api/subscriptions`, subPayload, config);
+        await axios.post(`${API_BASE_URL}/api/subscriptions/generate-daily-orders`, {}, config);
 
         alert("✅ Weekly Organic Subscription Plan created successfully! First delivery arrives tomorrow at 7:00 AM.");
       } else {
@@ -103,7 +103,7 @@ export default function CartDrawer() {
           orderType: "One-Time",
         };
 
-        await axios.post("http://localhost:5000/api/orders", orderPayload);
+        await axios.post(`${API_BASE_URL}/api/orders`, orderPayload);
         alert(`✅ Order placed successfully! Total Amount: ₹${Math.round(finalAmount)}. Scheduled for 7:00 AM delivery.`);
       }
 
