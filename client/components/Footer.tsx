@@ -72,8 +72,16 @@ export default function Footer() {
             <h3 className="text-white font-bold mb-6 tracking-wide">Contact Us</h3>
             <ul className="space-y-4 text-slate-400 text-sm">
               <li className="flex items-start gap-3">
-                <span className="text-green-500 mt-0.5">📍</span> 
-                <span className="leading-relaxed">Lal Balram Organic Farm, <br/>Arwal, Bihar - 804401</span>
+                <span className="text-emerald-400 mt-0.5">📍</span> 
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Lal+Balram+Organic+Farm+Rojapar+Arwal+Bihar+804401"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="leading-relaxed hover:text-emerald-400 underline transition-colors"
+                >
+                  Lal Balram Organic Farm, <br/>Rojapar, Arwal, Bihar - 804401 <br/>
+                  <span className="text-xs font-bold text-amber-400">Open on Google Maps ↗</span>
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-green-500">📞</span> 

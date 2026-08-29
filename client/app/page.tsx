@@ -122,10 +122,15 @@ export default function LandingPage() {
       <section className="relative overflow-hidden pt-12 pb-20 lg:pt-16 lg:pb-28 bg-gradient-to-b from-emerald-50/80 via-white to-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           {/* Location Badge */}
-          <div className="inline-flex items-center gap-2 bg-emerald-100 border border-emerald-300 text-emerald-900 px-4 py-1.5 rounded-full text-xs font-extrabold shadow-sm mb-6">
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Lal+Balram+Organic+Farm+Rojapar+Arwal+Bihar+804401"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 text-emerald-900 px-4 py-1.5 rounded-full text-xs font-extrabold shadow-sm mb-6 transition"
+          >
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-            Lal Balram Organic Farm • Arwal, Bihar - 804401
-          </div>
+            <span>📍 Lal Balram Organic Farm • Rojapar, Arwal, Bihar - 804401 (Open Map ↗)</span>
+          </a>
 
           {/* Main Title */}
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight max-w-4xl mx-auto leading-[1.1]">
@@ -269,25 +274,33 @@ export default function LandingPage() {
                 Visit & Contact Us
               </span>
               <h3 className="text-2xl sm:text-3xl font-black text-white">
-                Lal Balram Organic Farm, Arwal, Bihar
+                Lal Balram Organic Farm, Rojapar, Arwal, Bihar
               </h3>
               <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed font-medium">
-                Address: Lal Balram Organic Farm, Arwal, Bihar - 804401 <br />
+                Address: Lal Balram Organic Farm, Rojapar, Arwal, Bihar - 804401 <br />
                 Helpline Phone: <strong className="text-amber-300 font-mono text-sm">+91 85444 88617</strong> <br />
                 Support Email: <strong className="text-white">hello@thefarmbrothers.com</strong>
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full lg:w-auto">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Lal+Balram+Organic+Farm+Rojapar+Arwal+Bihar+804401"
+                target="_blank"
+                rel="noreferrer"
+                className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-5 py-3.5 rounded-xl transition text-center shadow-lg flex items-center justify-center gap-2 group"
+              >
+                <span className="text-base group-hover:scale-110 transition-transform">📍</span> Locate Our Farm on Google Maps ↗
+              </a>
               <Link
                 href="/register"
-                className="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-6 py-3.5 rounded-xl transition text-center shadow"
+                className="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-5 py-3.5 rounded-xl transition text-center shadow"
               >
                 Register as Customer
               </Link>
               <Link
                 href="/login"
-                className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-6 py-3.5 rounded-xl border border-white/20 transition text-center"
+                className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-5 py-3.5 rounded-xl border border-white/20 transition text-center"
               >
                 Sign In to Portal
               </Link>
