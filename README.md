@@ -1,43 +1,53 @@
-# 🌿 FarmFresh Direct — Farm-to-Doorstep Daily Organic Subscription & Route Logistics Platform
+# 🌾 THE FARM BROTHERS — Direct Farm-to-Doorstep Organic Platform
 
-> **A Next-Generation Direct-to-Consumer (D2C) Organic Farming & Daily Subscription System.**
+> **From Our Farm For Your Family**
 > 
-> *Digitizing the end-to-end farm-to-doorstep journey: daily A2 milk & fresh organic produce subscriptions, strict 9:30 PM cutoff locks, automated Bihar delivery route batching, harvest-to-pack logistics, 7:00 AM SLA doorstep drops with photo proof, and instant quality defect wallet refunds.*
+> *Digitizing the direct farm-to-doorstep journey: Daily A2 Gir cow milk, fresh chemical-free organic produce, vermicompost, and natural spices directly from Lal Balram Organic Farm (Rojapar, Arwal, Bihar - 804401) delivered to doorsteps by 7:00 AM.*
+
+---
+
+## 🌐 Live Production Links
+
+- 🚀 **Live Next.js Frontend (Vercel)**: [https://the-farm-brothers.vercel.app](https://the-farm-brothers.vercel.app) *(or your Vercel deployment URL)*
+- ⚡ **Live Express/Node Backend API (Render)**: [https://the-farm-brothers.onrender.com](https://the-farm-brothers.onrender.com)
+- 🏥 **API Health Check**: [https://the-farm-brothers.onrender.com/api/health](https://the-farm-brothers.onrender.com/api/health)
+- 📍 **Google Maps Location**: [Lal Balram Organic Farm, Rojapar, Arwal, Bihar 804401](https://www.google.com/maps/search/?api=1&query=Lal+Balram+Organic+Farm+Rojapar+Arwal+Bihar+804401)
+- 📦 **GitHub Repository**: [Manjeet-code/The-Farm-Brothers](https://github.com/Manjeet-code/The-Farm-Brothers.git)
 
 ---
 
 ## 💡 Project Vision & Core Idea
 
-Traditional organic farming supply chains suffer from high spoilage, unorganized logistics, and missed morning delivery deadlines. **FarmFresh Direct** bridges organic farmers directly with urban households through a smart, zone-managed subscription platform:
+Traditional agricultural supply chains involve multiple middlemen, leading to high spoilage, unorganized logistics, and delayed delivery. **The Farm Brothers** platform directly connects **Lal Balram Organic Farm** (located at Rojapar, Arwal, Bihar) with urban households through an intelligent, zone-managed subscription system:
 
-1. **Daily Morning SLA Delivery (7:00 AM)**: Fresh A2 cow milk and daily organic produce delivered directly to doorsteps before 7 AM.
-2. **Nightly Cutoff Lock (9:30 PM)**: Automated order cutoff at 9:30 PM every evening to lock harvest requirements for local farms and batch delivery routes.
-3. **Route Logistics Batching**: Operational route batching across key Bihar delivery corridors (`Arwal-Patna`, `Arwal-Jehanabad`, `Arwal-Aurangabad`, `Arwal-Gaya`).
-4. **Mobile Field Experience for Delivery Staff**: Smartphone-optimized stop sequences, 1-tap customer calling, GPS navigation, and mandatory doorstep drop photo proof.
-5. **Instant Quality Resolution**: Photo-verified quality defect claims (weight short, damaged produce) with 1-click admin approval and instant in-app wallet refunds.
+1. **Guaranteed 7:00 AM Morning Delivery**: Fresh A2 Gir Cow Milk and organic vegetables delivered before 7:00 AM.
+2. **Nightly Cutoff Lock (9:30 PM)**: Automated cutoff locks nightly harvest requirement for farms and batches delivery routes.
+3. **Route Batching across Bihar Corridors**: Efficient delivery route management across `Arwal-Patna`, `Arwal-Jehanabad`, `Arwal-Aurangabad`, and `Arwal-Gaya`.
+4. **Dual Delivery Ops Modes**:
+   - **Desk Manager Mode**: Hub-level packing, item substitutions, stock ceilings, and vehicle dispatching.
+   - **Mobile Field Mode**: Driver route sequence cards, 1-tap customer call, GPS navigation, and mandatory doorstep drop photo proof.
+5. **Instant Quality Defect Wallet Refunds**: Photo-verified quality claims (short weight, damaged items) with 1-click admin approval and instant in-app wallet credits.
 
 ---
 
-## 🚀 Key Features & Modules
+## 🚀 Key Modules & Features
 
-### 🛒 1. Customer Shopping & Subscription Engine
-- **Product Catalog**: A2 Cow Milk, Organic Turmeric Powder, Cold Pressed Oils, Fresh Vegetables & Fruits.
-- **Flexible Subscriptions**: Daily, Alternate Days, or Custom Day selection with 1-click Pause, Resume, and Quantity adjustments.
-- **Pincode Serviceability Checker**: Live pincode validation mapping addresses to operational routes.
+### 🛒 1. Customer Landing Page & Storefront
+- **Light Theme Modern Landing Page (`/`)**: Value pillars, offering highlights, farm story, and direct Google Maps location pin.
+- **Dedicated Product Catalog (`/storefront`)**: A2 Gir Cow Milk, Organic Turmeric Powder, Cold Pressed Oils, Fresh Vegetables, Vermicompost.
+- **Flexible Subscriptions**: Daily, Alternate Days, or Custom Day selection with 1-click Pause, Resume, Skip Day, and Quantity adjustments.
+- **Pincode Serviceability Checker**: Live pincode validation mapping addresses to delivery routes (*e.g., 804401*).
 - **In-App Wallet & Mock Payment Gateway**: Integrated checkout supporting Mock UPI/Card payment and instant wallet refunds.
 
-### 🚚 2. Logistics & Delivery Operations Dashboard
+### 🚚 2. Delivery Logistics & Field Operations Dashboard
 - **Route Operational Zones**: Zone capacity management, staff assignment, and pincode coverage.
-- **Item Harvesting & Packing Workflow**: Item-by-item status updates (`Pending` ➔ `Harvested` ➔ `Packed` ➔ `Substituted`).
-- **Batch Vehicle Dispatch**: Dispatch deadline management (4:30 AM) and vehicle dispatch status tracking.
-- **Mobile Field Experience (Phase 14)**:
-  - Stop sequence cards (`STOP #1`, `STOP #2`).
-  - **`📞 Call Customer`** & **`📍 GPS Directions`** links.
-  - **`📸 Doorstep Proof Photo Upload`**: Direct mobile camera upload saving Base64 proof images to MongoDB.
+- **Harvest & Packing Workflow**: Item-by-item status updates (`Pending` ➔ `Harvested` ➔ `Packed` ➔ `Substituted`).
+- **Vehicle Dispatch**: Dispatch deadline management (4:30 AM) and vehicle dispatch status tracking.
+- **Mobile Field Mode**: Stop sequence cards (`STOP #1`, `STOP #2`), 1-tap calling, GPS navigation, and mobile camera photo proof upload.
 
 ### 🛡️ 3. Super Admin & Executive Analytics
-- **Live Platform Metrics**: Real-time total revenue, daily order volume, and 7 AM SLA compliance rate (%).
-- **Quality Defect Claim Desk**: Photo evidence review for quality claims with 1-click wallet credit refunds.
+- **Live Platform Metrics**: Real-time revenue, daily order volume, and 7 AM SLA compliance rate (%).
+- **Quality Defect Desk**: Photo evidence review for quality claims with 1-click wallet credit refunds.
 - **Immutable Security Audit Trail**: Detailed audit logs capturing every critical system action (`LOGIN`, `ORDER_PLACED`, `CUTOFF_LOCKED`, `DISPATCHED`, `DELIVERED`, `REFUNDED`).
 
 ---
@@ -53,7 +63,7 @@ Traditional organic farming supply chains suffer from high spoilage, unorganized
 
 ---
 
-## 🔑 Pre-Configured One-Click Demo Accounts
+## 🔑 One-Click Demo Accounts
 
 Use these one-click buttons on the Login page (`/login`) or sign in manually with password **`password123`**:
 
@@ -68,33 +78,33 @@ Use these one-click buttons on the Login page (`/login`) or sign in manually wit
 ## 🛠️ Technology Stack
 
 ```
-[ Frontend: Next.js 16 (App Router, Turbopack, React, TypeScript, Tailwind CSS) ]
+[ Frontend: Next.js 16 (App Router, Turbopack, React, TypeScript, Vanilla CSS + Tailwind) ]
                                    │
                                    ▼ HTTP REST API (JWT Auth)
                                    │
-[ Backend: Node.js, Express, TypeScript, Rate-Limiter, Security Middleware ]
+[ Backend: Node.js, Express, TypeScript, Security Middleware, Cors ]
                                    │
                                    ▼ Mongoose ODM
                                    │
-[ Database: MongoDB (Users, Orders, Subscriptions, Zones, Issues, AuditLogs) ]
+[ Database: MongoDB Atlas (Users, Orders, Subscriptions, Zones, Issues, AuditLogs) ]
 ```
 
-- **Frontend**: Next.js 16, React 19, TypeScript, Vanilla CSS + Tailwind, Axios, Lucide Icons.
-- **Backend**: Node.js, Express.js, TypeScript, JSON Web Token (JWT), Security Rate Limiting.
-- **Database**: MongoDB & Mongoose ORM.
-- **Build Tools**: Turbopack, TSX, Node test runner.
+- **Frontend**: Next.js 16, React 19, TypeScript, Vanilla CSS, Tailwind CSS, Axios, Lucide Icons.
+- **Backend**: Node.js, Express.js, TypeScript, JSON Web Token (JWT).
+- **Database**: MongoDB Atlas & Mongoose ODM.
+- **Hosting**: Next.js on **Vercel**, Express API on **Render**.
 
 ---
 
-## ⚡ Quick Start & Setup Instructions
+## ⚡ Local Setup & Execution
 
-### 1. Clone the Repository
+### 1. Clone Repository
 ```bash
-git clone https://github.com/Manjeet-code/Organic-Farming.git
-cd Organic-Farming
+git clone https://github.com/Manjeet-code/The-Farm-Brothers.git
+cd The-Farm-Brothers
 ```
 
-### 2. Configure Backend Server
+### 2. Backend Setup
 ```bash
 cd server
 npm install
@@ -103,23 +113,22 @@ npm install
 Create a `.env` file in `server/`:
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/farmfresh
-JWT_SECRET=farmfresh_super_secret_jwt_key_2026
+MONGODB_URI=mongodb+srv://manjeet_db:jNcmXu20QMN3cGk3@cluster0.q8tyo63.mongodb.net/agro-organic-store?retryWrites=true&w=majority
+JWT_SECRET=farmfresh_jwt_secret_key_2026_dev
 NODE_ENV=development
 ```
 
-Start the Backend Server & Seed Initial Data:
+Run seed and start development server:
 ```bash
 # Seed initial products & admin account
-npx tsx seedProducts.ts
-npx tsx seedAdmin.ts
+npm run seed
 
-# Start backend server
+# Start server
 npm run dev
 ```
 
-### 3. Configure Client (Next.js)
-In a new terminal window:
+### 3. Frontend Setup
+In a new terminal:
 ```bash
 cd client
 npm install
@@ -130,17 +139,7 @@ Open **`http://localhost:3000`** in your browser.
 
 ---
 
-## 🧪 Production Verification & Build
-To verify the full production build:
-```bash
-cd client
-npm run build
-```
-*(Build compiles with zero TypeScript errors across 9 static route pages).*
-
----
-
 ## 📜 License & Author
 
-Developed with ❤️ by **Manjeet** for Organic Farming & Direct-to-Consumer Agricultural Supply Chain Innovation.
-- **GitHub Repository**: [Manjeet-code/Organic-Farming](https://github.com/Manjeet-code/Organic-Farming)
+Developed with ❤️ by **Manjeet** for **The Farm Brothers** (Lal Balram Organic Farm, Rojapar, Arwal, Bihar - 804401).
+- **Repository**: [github.com/Manjeet-code/The-Farm-Brothers](https://github.com/Manjeet-code/The-Farm-Brothers)
