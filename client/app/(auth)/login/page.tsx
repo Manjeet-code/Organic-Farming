@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useAuth } from "../../../context/AuthContext";
 import { useRouter } from "next/navigation";
+import Logo from "@/components/Logo";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -55,19 +56,9 @@ export default function Login() {
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-200/50 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <Link href="/" className="flex items-center justify-center gap-3 cursor-pointer mb-2">
-          <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-emerald-950 p-1 border border-emerald-700 shadow-sm flex items-center justify-center">
-            <img src="/icon.png" alt="The Farm Brothers Logo" className="w-full h-full object-contain" />
-          </div>
-          <div className="flex flex-col text-left">
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight leading-none">
-              THE FARM <span className="text-emerald-600 font-extrabold">BROTHERS</span>
-            </h2>
-            <span className="text-[10px] font-semibold text-emerald-700 tracking-wider uppercase mt-0.5">
-              From Our Farm For Your Family
-            </span>
-          </div>
-        </Link>
+        <div className="flex justify-center mb-2">
+          <Logo href="/" size="lg" />
+        </div>
         <h2 className="mt-4 text-center text-2xl font-extrabold tracking-tight text-slate-900">
           Sign in to your account
         </h2>

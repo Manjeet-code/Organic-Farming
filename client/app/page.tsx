@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Logo from "../components/Logo";
 import Footer from "../components/Footer";
 
 export default function LandingPage() {
@@ -86,23 +87,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Logo & Brand Name */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-11 h-11 rounded-2xl bg-emerald-50 p-1 border border-emerald-200 shadow-sm group-hover:scale-105 transition-transform flex items-center justify-center">
-              <img
-                src="/icon.png"
-                alt="The Farm Brothers Logo"
-                className="w-full h-full object-contain rounded-xl"
-              />
-            </div>
-            <div>
-              <span className="text-lg md:text-xl font-black tracking-tight text-slate-900 group-hover:text-emerald-700 transition-colors block leading-none">
-                THE FARM <span className="text-emerald-700">BROTHERS</span>
-              </span>
-              <span className="text-[10px] text-emerald-800 font-bold tracking-wider uppercase block mt-1">
-                From Our Farm For Your Family
-              </span>
-            </div>
-          </Link>
+          <Logo href="/" />
 
           {/* Center Links (Desktop) */}
           <nav className="hidden md:flex items-center gap-8 text-xs font-bold text-slate-700">

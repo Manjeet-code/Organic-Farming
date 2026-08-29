@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import CartDrawer from "./CartDrawer";
-import axios from "axios";
+import Logo from "./Logo";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -176,19 +176,7 @@ export default function AppShell({
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <Link href="/" className="flex items-center gap-3 group">
-                <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-emerald-950 p-1 border border-emerald-700 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform">
-                  <img src="/icon.png" alt="The Farm Brothers Logo" className="w-full h-full object-contain" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-extrabold text-lg tracking-tight text-white leading-none">
-                    THE FARM <span className="text-emerald-400 font-extrabold">BROTHERS</span>
-                  </span>
-                  <span className="text-[9px] font-semibold text-emerald-300 tracking-wider uppercase mt-0.5">
-                    From Our Farm For Your Family
-                  </span>
-                </div>
-              </Link>
+              <Logo href="/" size="sm" />
               <div className="hidden sm:block pl-3 border-l border-slate-700">
                 {getRoleBadge()}
               </div>

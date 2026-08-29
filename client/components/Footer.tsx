@@ -1,3 +1,5 @@
+import Logo from "./Logo";
+
 export default function Footer() {
   return (
     <footer className="relative bg-slate-950 text-white pt-24 pb-12 overflow-hidden border-t border-slate-900">
@@ -28,19 +30,7 @@ export default function Footer() {
         {/* Main Footer Links */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
           <div className="col-span-2 md:col-span-2 space-y-6 pr-0 md:pr-10">
-            <div className="flex items-center gap-3 cursor-pointer">
-              <div className="relative w-11 h-11 rounded-xl overflow-hidden bg-emerald-950 p-1.5 border border-emerald-800 shadow-sm flex items-center justify-center">
-                <img src="/icon.png" alt="The Farm Brothers Logo" className="w-full h-full object-contain" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-black text-white tracking-tight leading-none">
-                  THE FARM <span className="text-emerald-400 font-extrabold">BROTHERS</span>
-                </h2>
-                <span className="text-[10px] font-medium text-emerald-300 tracking-wider uppercase mt-1 block">
-                  From Our Farm For Your Family
-                </span>
-              </div>
-            </div>
+            <Logo href="/" size="lg" />
             <p className="text-slate-400 leading-relaxed text-sm">
               Growing Good. Growing Together. Bringing farm-fresh A2 dairy, 100% organic produce, vermicompost, and natural spices directly from Lal Balram Organic Farm to your doorstep.
             </p>

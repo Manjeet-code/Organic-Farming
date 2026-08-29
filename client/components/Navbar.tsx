@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useAuth } from "../context/AuthContext";
+import Logo from "./Logo";
 
 export default function Navbar({
   cartCount,
@@ -23,7 +21,7 @@ export default function Navbar({
   return (
     <div className="sticky top-0 z-50 flex flex-col shadow-sm">
       {/* Top Announcement Bar */}
-      <div className="bg-green-700 text-white text-xs md:text-sm font-medium py-2 px-6 flex justify-between items-center">
+      <div className="bg-emerald-800 text-white text-xs md:text-sm font-medium py-2 px-6 flex justify-between items-center">
         <p className="hidden md:block">🌱 The Farm Brothers | 100% Certified Organic</p>
         <p className="mx-auto md:mx-0 font-semibold tracking-wide">
           🚚 Free Next-Day Delivery on all Daily Orders & Subscriptions!
@@ -39,19 +37,7 @@ export default function Navbar({
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 cursor-pointer group">
-            <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-green-50 p-1 border border-green-200/80 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform">
-              <img src="/icon.png" alt="The Farm Brothers Logo" className="w-full h-full object-contain" />
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-xl md:text-2xl font-black text-emerald-950 tracking-tight leading-none">
-                THE FARM <span className="text-emerald-600 font-extrabold">BROTHERS</span>
-              </h1>
-              <span className="text-[10px] font-semibold text-emerald-700 tracking-wider uppercase mt-0.5">
-                From Our Farm For Your Family
-              </span>
-            </div>
-          </Link>
+          <Logo href="/" />
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-4 xl:gap-6 font-semibold text-gray-600 text-sm xl:text-base">
