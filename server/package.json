@@ -6,8 +6,10 @@
         "lib": "lib"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "npx tsx server.ts"
+        "start": "npx tsx server.ts",
+        "dev": "npx tsx server.ts",
+        "seed": "npx tsx seedProducts.ts && npx tsx seedAdmin.ts",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
     "author": "",
