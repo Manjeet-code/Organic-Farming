@@ -1241,7 +1241,7 @@ export default function Dashboard() {
 
   const handleCustomerTabChange = (tab: string) => {
     if (tab === "catalog") {
-      router.push("/");
+      router.push("/storefront");
     } else {
       setActiveTab(tab);
     }

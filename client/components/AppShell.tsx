@@ -140,8 +140,8 @@ export default function AppShell({
     } else {
       // Customer
       if (linkId === "catalog") {
-        if (typeof window !== "undefined" && window.location.pathname !== "/") {
-          router.push("/");
+        if (typeof window !== "undefined" && window.location.pathname !== "/storefront") {
+          router.push("/storefront");
         }
       } else if (linkId === "overview" || linkId === "wallet" || linkId === "issues") {
         if (typeof window !== "undefined" && window.location.pathname !== "/dashboard") {
